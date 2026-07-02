@@ -3,6 +3,7 @@ package Laboratorio.Trabajo.entity;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "transferencias")
@@ -13,10 +14,12 @@ public class transferencia {
     @Column(name = "TransferenciaID")
     private Integer transferenciaId;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idcuenta_orig")
     private cuenta cuentaOrigen;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idcuenta_dest")
     private cuenta cuentaDestino;

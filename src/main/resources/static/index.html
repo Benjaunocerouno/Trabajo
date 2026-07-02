@@ -54,6 +54,22 @@
 </div>
 
 <script>
+    var ID_CUENTA_ORIGEN = 1;
+
+    // Cargar saldo real al inicio
+    function cargarSaldo() {
+        fetch('/api/cuentas/' + ID_CUENTA_ORIGEN)
+            .then(response => response.json())
+            .then(data => {
+                var saldo = parseFloat(data.saldo) || 0;
+                document.querySelector('.balance-amount').textContent =
+                    'S/ ' + saldo.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            })
+            .catch(() => {
+                document.querySelector('.balance-amount').textContent = 'S/ --';
+            });
+    }
+
     function mostrarPantalla(id) {
         document.querySelectorAll('.screen').forEach(function (el) {
             el.classList.remove('active');
@@ -62,15 +78,84 @@
     }
 
     function irAConfirmacion() {
-        var monto = parseFloat(document.getElementById('monto').value) || 0;
+        var cuentaDest = document.getElementById('cuenta-destino').value.trim();
+        var montoStr   = document.getElementById('monto').value.trim();
+
+        // Validar cuenta destino no vacía
+        if (!cuentaDest) {
+            alert('⚠️ Ingresa el número de cuenta destino.');
+            return;
+        }
+        // Validar que cuenta destino no contenga solo números (formato esperado: texto con guiones)
+        if (/[^a-zA-Z0-9\-]/.test(cuentaDest)) {
+            alert('⚠️ El número de cuenta destino contiene caracteres inválidos.');
+            return;
+        }
+
+        // Validar monto: no vacío, no letras, no negativo, no cero
+        if (!montoStr) {
+            alert('⚠️ Ingresa el monto a transferir.');
+            return;
+        }
+        if (!/^\d+(\.\d{1,2})?$/.test(montoStr)) {
+            alert('⚠️ El monto solo debe contener números positivos (ej: 150.50).');
+            return;
+        }
+        var monto = parseFloat(montoStr);
+        if (monto <= 0) {
+            alert('⚠️ El monto debe ser mayor a S/ 0.00.');
+            return;
+        }
+        if (monto > 10000) {
+            alert('⚠️ El monto máximo por transferencia es S/ 10,000.00.');
+            return;
+        }
+
         document.getElementById('review-monto').textContent =
             'S/ ' + monto.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        document.getElementById('review-nombre').textContent = cuentaDest;
+
         mostrarPantalla('screen-2');
     }
 
     function irAExito() {
-        mostrarPantalla('screen-3');
+        var monto        = parseFloat(document.getElementById('monto').value);
+        var numeroDestino = document.getElementById('cuenta-destino').value.trim();
+
+        var params = new URLSearchParams();
+        params.append('idCuentaOrigen', ID_CUENTA_ORIGEN);
+        params.append('numeroCuentaDestino', numeroDestino);
+        params.append('monto', monto);
+        params.append('referencia', 'Transferencia web');
+
+        fetch('/api/transferencias/realizar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: params.toString()
+        })
+        .then(response => {
+            if (response.ok) {
+                // Limpiar campos y actualizar saldo
+                document.getElementById('cuenta-destino').value = '';
+                document.getElementById('monto').value = '';
+                cargarSaldo();
+                mostrarPantalla('screen-3');
+            } else {
+                return response.json().then(data => {
+                    alert('❌ Error: ' + (data.error || 'No se pudo realizar la transferencia.'));
+                    mostrarPantalla('screen-1');
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error de conexión:', error);
+            alert('❌ Error de conexión con el servidor.');
+            mostrarPantalla('screen-1');
+        });
     }
+
+    // Al cargar la página se obtiene el saldo real
+    window.onload = cargarSaldo;
 </script>
 </body>
 </html>

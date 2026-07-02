@@ -6,7 +6,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import java.util.Optional;
+
 @Repository
 public interface CuentaRepository extends JpaRepository<cuenta, Integer> {
     List<cuenta> findByClienteIdcliente(Integer idcliente);
+    Optional<cuenta> findByNumerocuenta(String numerocuenta);
 }

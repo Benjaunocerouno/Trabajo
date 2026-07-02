@@ -2,6 +2,7 @@ package Laboratorio.Trabajo.entity;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "cuenta")
@@ -12,6 +13,7 @@ public class cuenta {
     @Column(name = "idcuenta")
     private Integer idcuenta;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idcliente", nullable = false)
     private cliente cliente;

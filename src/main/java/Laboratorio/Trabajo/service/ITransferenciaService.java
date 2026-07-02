@@ -9,6 +9,6 @@ public interface ITransferenciaService {
     List<transferencia> buscarTodos();
     Optional<transferencia> buscarPorId(Integer id);
     transferencia guardar(transferencia transferencia);
-    transferencia realizarTransferencia(Integer idCuentaOrigen, Integer idCuentaDestino, BigDecimal monto, String referencia);
+    transferencia realizarTransferencia(Integer idCuentaOrigen, String numeroCuentaDestino, BigDecimal monto, String referencia);
     void eliminar(Integer id);
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/transferencias")
@@ -34,16 +35,16 @@ public class TransferenciaController {
     }
 
     @PostMapping("/realizar")
-    public ResponseEntity<transferencia> realizarTransferencia(@RequestParam Integer idCuentaOrigen,
-            @RequestParam Integer idCuentaDestino,
+    public ResponseEntity<?> realizarTransferencia(@RequestParam Integer idCuentaOrigen,
+            @RequestParam String numeroCuentaDestino,
             @RequestParam BigDecimal monto,
             @RequestParam(required = false) String referencia) {
         try {
-            transferencia t = transferenciaService.realizarTransferencia(idCuentaOrigen, idCuentaDestino, monto,
+            transferencia t = transferenciaService.realizarTransferencia(idCuentaOrigen, numeroCuentaDestino, monto,
                     referencia);
             return ResponseEntity.ok(t);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
 
