@@ -1,0 +1,185 @@
+:root {
+    --bg: #fbf7f1;
+    --card: #ffffff;
+    --card-border: rgba(40, 30, 20, 0.06);
+    --text: #241d2e;
+    --muted: #7c7488;
+    --primary: #6c5ce7;
+    --primary-dark: #5541d6;
+    --accent: #17b897;
+    --accent-soft: #e4faf4;
+    --shadow: 0 24px 60px rgba(108, 92, 231, 0.16);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 32px 16px;
+    background:
+        radial-gradient(circle at top left, rgba(108, 92, 231, 0.16), transparent 33%),
+        radial-gradient(circle at bottom right, rgba(23, 184, 151, 0.16), transparent 30%),
+        linear-gradient(180deg, var(--bg), #fffaf3 70%);
+}
+
+/* Phone frame */
+
+.phone {
+    width: 100%;
+    max-width: 360px;
+    min-height: 560px;
+    background: var(--card);
+    border-radius: 36px;
+    border: 1px solid var(--card-border);
+    box-shadow: var(--shadow);
+    padding: 32px 24px;
+    display: flex;
+    align-items: stretch;
+}
+
+/* Screens */
+
+.screen {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+}
+
+.screen.active {
+    display: flex;
+}
+
+/* Screen 1: transfer form */
+
+.balance-label {
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.balance-amount {
+    font-size: 2.4rem;
+    letter-spacing: -0.03em;
+    margin: 6px 0 32px;
+}
+
+.field {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.field span {
+    font-size: 0.86rem;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.field input {
+    width: 100%;
+    border: 1px solid rgba(36, 29, 46, 0.14);
+    border-radius: 14px;
+    padding: 15px 16px;
+    font: inherit;
+    font-size: 1rem;
+    background: #faf9fc;
+    color: var(--text);
+}
+
+.field input:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: 1px;
+    background: #fff;
+}
+
+.btn-primary {
+    margin-top: auto;
+    border: 0;
+    border-radius: 14px;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff;
+    font: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 14px 28px rgba(108, 92, 231, 0.32);
+}
+
+/* Screen 2: confirmation */
+
+.step-label {
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+.review-amount {
+    font-size: 2.6rem;
+    letter-spacing: -0.03em;
+    margin: 6px 0 32px;
+}
+
+.recipient {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    border-radius: 16px;
+    background: rgba(36, 29, 46, 0.03);
+    border: 1px solid rgba(36, 29, 46, 0.08);
+    margin-bottom: 32px;
+}
+
+.recipient div {
+    display: grid;
+    gap: 4px;
+}
+
+.recipient strong {
+    font-size: 1.02rem;
+}
+
+.recipient-avatar {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.82rem;
+}
+
+/* Screen 3: success */
+
+#screen-3 {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 20px;
+}
+
+.check-circle {
+    width: 76px;
+    height: 76px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    color: var(--accent);
+}
+
+.success-title {
+    font-size: 1.3rem;
+}
