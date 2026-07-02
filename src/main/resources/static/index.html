@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco Trabajo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div class="phone">
+
+    <section id="screen-1" class="screen active">
+        <span class="balance-label">Saldo disponible</span>
+        <strong class="balance-amount">S/ 2,500.00</strong>
+
+        <label class="field">
+            <span>Cta Destino</span>
+            <input type="text" id="cuenta-destino" placeholder="000-0000000000">
+        </label>
+
+        <label class="field">
+            <span>Monto a enviar</span>
+            <input type="number" id="monto" placeholder="0.00">
+        </label>
+
+        <button type="button" class="btn-primary" onclick="irAConfirmacion()">Transferir</button>
+    </section>
+
+    <section id="screen-2" class="screen">
+        <span class="step-label">Monto a transferir</span>
+        <strong class="review-amount" id="review-monto">S/ 0.00</strong>
+
+        <div class="recipient">
+            <span class="recipient-avatar">MF</span>
+            <div>
+                <span class="step-label">Cuenta destino</span>
+                <strong id="review-nombre">María Fernández</strong>
+            </div>
+        </div>
+
+        <button type="button" class="btn-primary" onclick="irAExito()">Confirmar</button>
+    </section>
+
+    <section id="screen-3" class="screen">
+        <span class="check-circle">
+            <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        </span>
+        <strong class="success-title">Transacción Confirmada</strong>
+    </section>
+
+</div>
+
+<script>
+    function mostrarPantalla(id) {
+        document.querySelectorAll('.screen').forEach(function (el) {
+            el.classList.remove('active');
+        });
+        document.getElementById(id).classList.add('active');
+    }
+
+    function irAConfirmacion() {
+        var monto = parseFloat(document.getElementById('monto').value) || 0;
+        document.getElementById('review-monto').textContent =
+            'S/ ' + monto.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        mostrarPantalla('screen-2');
+    }
+
+    function irAExito() {
+        mostrarPantalla('screen-3');
+    }
+</script>
+</body>
+</html>
